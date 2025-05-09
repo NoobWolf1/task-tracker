@@ -1,11 +1,11 @@
-import {HIGH, MEDIUM, LOW, TODO, IN_PROGRESS, DONE} from '../config';
+import { HIGH, MEDIUM, LOW, TODO, IN_PROGRESS, DONE } from '../config';
 export interface Task {
-    readonly _id: number,
-    title: string,
-    priority: Priority,
-    //dateAdded: Date,
-    //dueDate: Date,
-    status: Status
+  readonly _id: number;
+  title: string;
+  priority: Priority;
+  //dateAdded: Date,
+  //dueDate: Date,
+  status: Status;
 }
 
 export type Priority = typeof HIGH | typeof MEDIUM | typeof LOW;
