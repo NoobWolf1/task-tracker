@@ -14,10 +14,10 @@ export type Priority = typeof HIGH | typeof MEDIUM | typeof LOW;
 export type Status = typeof TODO | typeof IN_PROGRESS | typeof DONE;
 
 export type Validation = {
-  command: string
-  isValid: boolean,
-  title?: string,
-  priority?: string,
-  status?: string,
-  _id?: number,
-}
+  command: string;
+  isValid: boolean;
+  title?: string;
+  priority?: string;
+  status?: string;
+  _id?: number;
+};

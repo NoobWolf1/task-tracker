@@ -12,7 +12,7 @@ export const HIGH = 'high',
   LIST = 'list',
   VALID_INPUT = [ADD, UPDATE, DELETE, MARK, LIST],
   PRIORITY_ARRAY = [LOW, MEDIUM, HIGH],
-  PROGRESS_ARRAY = [TODO, IN_PROGRESS , DONE]
+  PROGRESS_ARRAY = [TODO, IN_PROGRESS, DONE];
 
 export const MESSAGES = {
   WELCOME: 'Hi Welcome to a simple Task Manager.',
@@ -25,7 +25,6 @@ export const MESSAGES = {
   EMPTY_STRING_ENTERED: 'Empty string entered, please try again.',
   ONE_LENGTH_IS_INCORRECT: 'One word input is incorrect.',
   MISSING_TITLE: 'Missing or invalid quoted title',
-  MAX_ARGUMENTS: (command: string) =>  `Added more than required arguments for ${command} command.`,
+  MAX_ARGUMENTS: (command: string) => `Added more than required arguments for ${command} command.`,
   INVALID_ARGUMENT: (word: string, command: string) => `${word} is an invalid argument for ${command}`,
 };
-
