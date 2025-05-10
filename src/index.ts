@@ -1,6 +1,6 @@
 // TODO:
 
-import { UI } from "./src/module";
+import { UI } from "./module";
 
 // this should be the entry point
 async function main() : Promise<void> {
