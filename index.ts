@@ -1,6 +1,20 @@
 // TODO:
 
+import { UI } from "./src/module";
+
 // this should be the entry point
+async function main() : Promise<void> {
+    try {
+        const ui = new UI();
+        await ui.start();
+        
+    } catch (error) {
+        console.error('Fatal error: ', error);
+        process.exit(1);
+    }
+}
+
+main();
 
 // show the welcome message
 
