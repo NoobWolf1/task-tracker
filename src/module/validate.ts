@@ -85,7 +85,7 @@ export class Validate {
         const quoteEnd = input.indexOf('"', quoteStart + 1);
         if (quoteStart === -1 || quoteEnd === -1 || quoteEnd <= quoteStart + 1) {
             console.log(MESSAGES.MISSING(TITLE));
-            console.log(this.validate.isValid)
+            console.log(this.validate.isValid);
             return this.validate;
         }
         const title = input.slice(quoteStart + 1, quoteEnd);
@@ -202,24 +202,24 @@ export class Validate {
 
     private markValidation(input: string, command: string): Validation {
         // mark in-progress 1
-        const argList = input.split(" ");
+        const argList = input.split(' ');
         const length = argList.length;
-        if(length > 3) {
+        if (length > 3) {
             console.log(MESSAGES.MAX_ARGUMENTS(command));
             return this.validate;
         }
-        if(length <= 2) {
+        if (length <= 2) {
             console.log(MESSAGES.MIN_ARGUMENTS(command));
             return this.validate;
         }
-        if(length === 3) {
-            if(PROGRESS_ARRAY.includes(argList[1])) {
+        if (length === 3) {
+            if (PROGRESS_ARRAY.includes(argList[1])) {
                 this.validate['statusCommand'] = argList[1] as Status;
             } else {
                 console.log(MESSAGES.INVALID_ARGUMENT(argList[1], command));
                 return this.validate;
             }
-            if(isNaN(Number(argList[2]))) {
+            if (isNaN(Number(argList[2]))) {
                 console.log(MESSAGES.INVALID_ARGUMENT(argList[2], command));
                 return this.validate;
             } else {
@@ -231,15 +231,15 @@ export class Validate {
     }
 
     private updateValidation(input: string, command: string): Validation {
-        const argList = input.split(" ");
+        const argList = input.split(' ');
         // this only updates the title
         const length = argList.length;
-        if(length <= 2) {
+        if (length <= 2) {
             console.log(MESSAGES.MIN_ARGUMENTS(command));
             return this.validate;
         }
-        if(length >= 3) {
-            if(!isNaN(Number(argList[1]))) {
+        if (length >= 3) {
+            if (!isNaN(Number(argList[1]))) {
                 this.validate['_id'] = Number(argList[1]);
             } else {
                 console.log(MESSAGES.INVALID_ARGUMENT(argList[1], command));
@@ -253,7 +253,7 @@ export class Validate {
                 return this.validate;
             }
             const title = input.slice(quoteStart + 1, quoteEnd);
-            this.validate['title'] = title;       
+            this.validate['title'] = title;
         }
 
         this.validate['isValid'] = true;

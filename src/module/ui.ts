@@ -18,7 +18,6 @@ export class UI {
                 this.rl.question(prompt, resolve);
             });
         };
-
     }
 
     public async start(): Promise<void> {
@@ -61,7 +60,7 @@ export class UI {
         let validatedObj: Validation;
         const validate = new Validate();
         validatedObj = validate.validation(input, command);
-        
+
         console.log('in findMethod', validatedObj);
         if (validatedObj.isValid) {
             switch (command) {

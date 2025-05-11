@@ -30,5 +30,5 @@ export const MESSAGES = {
     MISSING: (word: string) => `Missing or invalid ${word}`,
     MAX_ARGUMENTS: (command: string) => `Added more than required arguments for ${command} command.`,
     INVALID_ARGUMENT: (word: string, command: string) => `${word} is an invalid argument for ${command}`,
-    MIN_ARGUMENTS: (command: string) => `Added less than required arguments for ${command} command.`
+    MIN_ARGUMENTS: (command: string) => `Added less than required arguments for ${command} command.`,
 };
