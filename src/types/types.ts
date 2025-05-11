@@ -5,8 +5,8 @@ export interface Task {
     priority?: Priority;
     status?: Status;
     //dueDate: Date,
-    //createdAt: Date,
-    //updatedAt: Date,
+    createdAt: Date,
+    updatedAt: Date,
 }
 
 export type Priority = typeof HIGH | typeof MEDIUM | typeof LOW;

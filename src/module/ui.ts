@@ -2,10 +2,12 @@ import { ADD, DELETE, LIST, MARK, MESSAGES, TASK_CLI, UPDATE } from '../config';
 import * as readline from 'readline';
 import { Validate } from './validate';
 import { Validation } from '../types';
+import { TaskOperations } from './taskOperations';
 
 export class UI {
     private rl: readline.Interface;
     private question: (prompt: string) => Promise<string>;
+    private taskOperations: TaskOperations;
 
     constructor() {
         this.rl = readline.createInterface({
@@ -18,6 +20,8 @@ export class UI {
                 this.rl.question(prompt, resolve);
             });
         };
+
+        this.taskOperations = new TaskOperations();
     }
 
     public async start(): Promise<void> {
@@ -39,15 +43,14 @@ export class UI {
     private async getInput() {
         let input: string = '';
         const isRunning: boolean = false;
-        //let validate = new Validate();
 
         while (!isRunning) {
             input = await this.question(TASK_CLI);
             const validate = new Validate();
             const { command, isValid } = validate.doInitialValidation(input, false);
             if (isValid) {
-                console.log('Succesful Initial validation');
-                // need to return false here to programmaticaly quit
+                console.log('Successful Initial validation');
+                // need to return false here to programmatically quit
                 await this.findMethod(command, input);
             } else {
                 // invalid option
@@ -60,32 +63,31 @@ export class UI {
         const validate = new Validate();
         const validatedObj: Validation = validate.validation(input, command);
 
-        console.log('in findMethod', validatedObj);
         if (validatedObj.isValid) {
             switch (command) {
                 case ADD:
-                    // process data
-                    console.log('add validation success ', validatedObj);
+                    this.taskOperations.addTask(validatedObj);
                     break;
                 case DELETE:
-                    // process data
-                    console.log('delete validation success', validatedObj);
+                    this.taskOperations.deleteTask(validatedObj);
                     break;
                 case LIST:
-                    // process data
-                    console.log('list validation success', validatedObj);
+                    this.taskOperations.listTasks(validatedObj);
                     break;
                 case MARK:
-                    // process data
-                    console.log('mark validation success', validatedObj);
+                    this.taskOperations.markTaskStatus(validatedObj);
                     break;
                 case UPDATE:
-                    // process data
-                    console.log('updation validation success', validatedObj);
+                    this.taskOperations.updateTask(validatedObj);
                     break;
                 default:
                     break;
             }
         }
+    }
+
+    public close(): void {
+        console.log(MESSAGES.BYE_BYE);
+        this.rl.close();
     }
 }
