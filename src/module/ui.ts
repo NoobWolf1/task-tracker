@@ -6,7 +6,6 @@ import { Validation } from '../types';
 export class UI {
     private rl: readline.Interface;
     private question: (prompt: string) => Promise<string>;
-    private validate: Validate;
 
     constructor() {
         this.rl = readline.createInterface({
@@ -20,7 +19,6 @@ export class UI {
             });
         };
 
-        this.validate = new Validate();
     }
 
     public async start(): Promise<void> {
@@ -46,7 +44,8 @@ export class UI {
 
         while (!isRunning) {
             input = await this.question(TASK_CLI);
-            const { command, isValid } = this.validate.doInitialValidation(input, false);
+            const validate = new Validate();
+            const { command, isValid } = validate.doInitialValidation(input, false);
             if (isValid) {
                 console.log('Succesful Initial validation');
                 // need to return false here to programmaticaly quit
@@ -59,28 +58,32 @@ export class UI {
     }
 
     private async findMethod(command: string, input: string): Promise<void> {
-        let validate: Validation;
-        validate = this.validate.validation(input, command);
-        if (validate.isValid) {
+        let validatedObj: Validation;
+        const validate = new Validate();
+        validatedObj = validate.validation(input, command);
+        
+        console.log('in findMethod', validatedObj);
+        if (validatedObj.isValid) {
             switch (command) {
                 case ADD:
                     // process data
-                    console.log('validation successfull: ', validate);
-                    console.log('adding data');
-
+                    console.log('add validation success ', validatedObj);
                     break;
                 case DELETE:
                     // process data
-                    console.log('deleting data', validate);
+                    console.log('delete validation success', validatedObj);
                     break;
                 case LIST:
-                    console.log('listing data');
+                    // process data
+                    console.log('list validation success', validatedObj);
                     break;
                 case MARK:
-                    console.log('marking data');
+                    // process data
+                    console.log('mark validation success', validatedObj);
                     break;
                 case UPDATE:
-                    console.log('updating data');
+                    // process data
+                    console.log('updation validation success', validatedObj);
                     break;
                 default:
                     break;

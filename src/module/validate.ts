@@ -40,12 +40,12 @@ export class Validate {
         const argList = input.split(' ');
         // argsList cant be of 1 length
         const command = argList[0];
-        if (argList.length === 1) {
-            this.validate.command = command;
-            console.log(MESSAGES.ONE_LENGTH_IS_INCORRECT);
+        // if (argList.length === 1) {
+        //     this.validate.command = command;
+        //     console.log(MESSAGES.ONE_LENGTH_IS_INCORRECT);
 
-            return this.validate;
-        }
+        //     return this.validate;
+        // }
 
         //first elem should be in the list
         isValid = VALID_INPUT.includes(command);
@@ -56,6 +56,7 @@ export class Validate {
 
     public validation(input: string, command: string): Validation {
         this.validate['command'] = command;
+        this.validate['isValid'] = false;
         switch (command) {
             case ADD:
                 this.validate = this.addValidation(input, command);
@@ -65,13 +66,12 @@ export class Validate {
                 break;
             case LIST:
                 this.validate = this.listValidation(input, command);
-                console.log('listing data');
                 break;
             case MARK:
-                console.log('marking data');
+                this.validate = this.markValidation(input, command);
                 break;
             case UPDATE:
-                console.log('updating data');
+                this.validate = this.updateValidation(input, command);
                 break;
             default:
                 break;
@@ -81,20 +81,15 @@ export class Validate {
     }
 
     private addValidation(input: string, command: string): Validation {
-        const isValid: boolean = false;
-        const validation: Validation = {
-            isValid,
-            command,
-        };
         const quoteStart = input.indexOf('"');
         const quoteEnd = input.indexOf('"', quoteStart + 1);
         if (quoteStart === -1 || quoteEnd === -1 || quoteEnd <= quoteStart + 1) {
             console.log(MESSAGES.MISSING(TITLE));
-
-            return validation;
+            console.log(this.validate.isValid)
+            return this.validate;
         }
         const title = input.slice(quoteStart + 1, quoteEnd);
-        validation['title'] = title;
+        this.validate['title'] = title;
 
         const rest = input
             .slice(quoteEnd + 1)
@@ -103,64 +98,64 @@ export class Validate {
             .filter(Boolean); // what is this? i mean how does it work
         if (rest.length > 2) {
             console.log(MESSAGES.MAX_ARGUMENTS(command));
-            return validation;
+            return this.validate;
         }
 
         let priority: Priority = LOW;
         let status: Status = TODO;
-        validation['priority'] = priority;
-        validation['status'] = status;
+        this.validate['priority'] = priority;
+        this.validate['status'] = status;
 
         if (rest.length === 1) {
             const word = rest[0].toLowerCase();
             if (PRIORITY_ARRAY.includes(word as Priority)) {
-                validation['priority'] = priority;
+                this.validate['priority'] = priority;
                 priority = word as Priority;
             } else if (PROGRESS_ARRAY.includes(word as Status)) {
-                validation['status'] = status;
+                this.validate['status'] = status;
                 status = word as Status;
             } else {
                 console.log(MESSAGES.INVALID_ARGUMENT(word, command));
-                return validation;
+                return this.validate;
             }
         }
 
         if (rest.length === 2) {
             const [first, second] = rest.map((w) => w.toLowerCase());
             if (PRIORITY_ARRAY.includes(first as Priority)) {
-                validation['priority'] = priority;
+                this.validate['priority'] = priority;
                 priority = first as Priority;
             } else {
                 console.log(MESSAGES.INVALID_ARGUMENT(first, command));
-                return validation;
+                return this.validate;
             }
 
             if (PROGRESS_ARRAY.includes(second as Status)) {
-                validation['status'] = status;
+                this.validate['status'] = status;
                 status = second as Status;
             } else {
                 console.log(MESSAGES.INVALID_ARGUMENT(second, command));
-                return validation;
+                return this.validate;
             }
         }
-        validation['isValid'] = true;
-        return validation;
+        this.validate['isValid'] = true;
+        return this.validate;
     }
 
     private deleteValidation(input: string, command: string) {
-        this.validate['command'] = command;
-        const argsList = input.split(' ');
-        if (argsList.length > 2) {
+        const argList = input.split(' ');
+        if (argList.length > 2) {
             console.log(MESSAGES.MAX_ARGUMENTS(command));
             return this.validate;
         }
-        if (argsList.length <= 1) {
+        if (argList.length <= 1) {
             console.log(MESSAGES.MISSING(ID));
+            return this.validate;
         }
-        if (argsList.length === 2) {
+        if (argList.length === 2) {
             let second: number;
-            if (!isNaN(Number(argsList[1]))) {
-                second = Number(argsList[1]);
+            if (!isNaN(Number(argList[1]))) {
+                second = Number(argList[1]);
                 this.validate['_id'] = second;
                 this.validate['isValid'] = true;
             } else {
@@ -185,6 +180,7 @@ export class Validate {
         if (length === 1) {
             // if input is only list then return with true and need return in the listAll true
             this.validate['listAll'] = true;
+            this.validate['isValid'] = true;
             return this.validate;
         }
         if (length === 2) {
@@ -200,6 +196,67 @@ export class Validate {
                 return this.validate;
             }
         }
+        this.validate['isValid'] = true;
+        return this.validate;
+    }
+
+    private markValidation(input: string, command: string): Validation {
+        // mark in-progress 1
+        const argList = input.split(" ");
+        const length = argList.length;
+        if(length > 3) {
+            console.log(MESSAGES.MAX_ARGUMENTS(command));
+            return this.validate;
+        }
+        if(length <= 2) {
+            console.log(MESSAGES.MIN_ARGUMENTS(command));
+            return this.validate;
+        }
+        if(length === 3) {
+            if(PROGRESS_ARRAY.includes(argList[1])) {
+                this.validate['statusCommand'] = argList[1] as Status;
+            } else {
+                console.log(MESSAGES.INVALID_ARGUMENT(argList[1], command));
+                return this.validate;
+            }
+            if(isNaN(Number(argList[2]))) {
+                console.log(MESSAGES.INVALID_ARGUMENT(argList[2], command));
+                return this.validate;
+            } else {
+                this.validate['_id'] = Number(argList[2]);
+            }
+        }
+        this.validate['isValid'] = true;
+        return this.validate;
+    }
+
+    private updateValidation(input: string, command: string): Validation {
+        const argList = input.split(" ");
+        // this only updates the title
+        const length = argList.length;
+        if(length <= 2) {
+            console.log(MESSAGES.MIN_ARGUMENTS(command));
+            return this.validate;
+        }
+        if(length >= 3) {
+            if(!isNaN(Number(argList[1]))) {
+                this.validate['_id'] = Number(argList[1]);
+            } else {
+                console.log(MESSAGES.INVALID_ARGUMENT(argList[1], command));
+                return this.validate;
+            }
+            const quoteStart = input.indexOf('"');
+            const quoteEnd = input.indexOf('"', quoteStart + 1);
+            if (quoteStart === -1 || quoteEnd === -1 || quoteEnd <= quoteStart + 1) {
+                console.log(MESSAGES.MISSING(TITLE));
+
+                return this.validate;
+            }
+            const title = input.slice(quoteStart + 1, quoteEnd);
+            this.validate['title'] = title;       
+        }
+
+        this.validate['isValid'] = true;
         return this.validate;
     }
 }

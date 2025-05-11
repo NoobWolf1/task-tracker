@@ -17,11 +17,12 @@ export type Validation = {
     command: string;
     isValid: boolean;
     title?: string;
-    priority?: string;
-    status?: string;
+    priority?: Priority;
+    status?: Status;
     _id?: number;
     listDone?: boolean;
     listTodo?: boolean;
     listInProgress?: boolean;
     listAll?: boolean;
+    statusCommand?: Status;
 };
