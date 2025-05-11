@@ -38,7 +38,7 @@ export class UI {
 
     private async getInput() {
         let input: string = '';
-        let isRunning: boolean = false;
+        const isRunning: boolean = false;
         //let validate = new Validate();
 
         while (!isRunning) {
@@ -57,9 +57,8 @@ export class UI {
     }
 
     private async findMethod(command: string, input: string): Promise<void> {
-        let validatedObj: Validation;
         const validate = new Validate();
-        validatedObj = validate.validation(input, command);
+        const validatedObj: Validation = validate.validation(input, command);
 
         console.log('in findMethod', validatedObj);
         if (validatedObj.isValid) {
