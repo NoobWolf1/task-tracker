@@ -20,19 +20,17 @@ import { Validation, Priority, Status } from '../types';
 export class Validate {
     private validate: Validation = {
         command: '',
-        isValid: false
-    }
-    
-    
+        isValid: false,
+    };
+
     public set setValidation(v: Validation) {
         this.validate = v;
     }
 
-    public set setValidationCommand(command: string){
+    public set setValidationCommand(command: string) {
         this.validate['command'] = command;
     }
-    
-    
+
     public doInitialValidation(input: string, isValid: boolean): Validation {
         if (input.trim() === '') {
             console.log(MESSAGES.EMPTY_STRING_ENTERED);
@@ -175,27 +173,27 @@ export class Validate {
     }
 
     private listValidation(input: string, command: string): Validation {
-        const argList = input.split(" ");
+        const argList = input.split(' ');
         const length = argList.length;
 
-        if(length > 2) {
+        if (length > 2) {
             // if input.arglist is of size > 2 return false invalid
             console.log(MESSAGES.MAX_ARGUMENTS(LIST));
             return this.validate;
         }
 
-        if(length === 1) {
+        if (length === 1) {
             // if input is only list then return with true and need return in the listAll true
             this.validate['listAll'] = true;
             return this.validate;
         }
-        if(length === 2) {
+        if (length === 2) {
             // if input.arglist is of size == 2 check of type an return flag accordingly
-            if(argList[1] === TODO) {
+            if (argList[1] === TODO) {
                 this.validate['listTodo'] = true;
-            } else if(argList[1] === IN_PROGRESS) {
+            } else if (argList[1] === IN_PROGRESS) {
                 this.validate['listInProgress'] = true;
-            } else if(argList[1] === DONE) {
+            } else if (argList[1] === DONE) {
                 this.validate['listDone'] = true;
             } else {
                 console.log(MESSAGES.INVALID_ARGUMENT(TEXT, command));

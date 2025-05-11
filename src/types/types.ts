@@ -20,9 +20,8 @@ export type Validation = {
     priority?: string;
     status?: string;
     _id?: number;
-    listDone?: boolean,
-    listTodo?: boolean,
-    listInProgress?: boolean,
-    listAll?: boolean
+    listDone?: boolean;
+    listTodo?: boolean;
+    listInProgress?: boolean;
+    listAll?: boolean;
 };
-

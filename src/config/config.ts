@@ -15,8 +15,7 @@ export const HIGH = 'high',
     PROGRESS_ARRAY = [TODO, IN_PROGRESS, DONE],
     TITLE = 'quoted title',
     ID = 'id',
-    TEXT = 'text'
-
+    TEXT = 'text';
 
 export const MESSAGES = {
     WELCOME: 'Hi Welcome to a simple Task Manager.',
